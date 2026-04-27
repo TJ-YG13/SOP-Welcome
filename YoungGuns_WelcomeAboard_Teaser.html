@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Young Guns — Welcome Aboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0D2B55;
+    --navy-light: #1a3d6e;
+    --navy-dark: #081c38;
+    --orange: #E8600A;
+    --orange-light: #f07030;
+    --cream: #F5F0E8;
+    --white: #ffffff;
+    --gray: #8a9bb5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy-dark);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,96,10,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,96,10,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,96,10,0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease forwards;
+  }
+
+  .chevrons {
+    display: flex;
+    gap: 4px;
+  }
+
+  .chev {
+    width: 0;
+    height: 0;
+    border-top: 11px solid transparent;
+    border-bottom: 11px solid transparent;
+    border-left: 13px solid var(--orange);
+  }
+
+  .wordmark {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--white);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.15s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(64px, 12vw, 120px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.25s forwards;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--orange);
+    display: block;
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--gray);
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 auto 3rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.35s forwards;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--orange);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 16px 36px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.45s forwards;
+  }
+
+  .hero-cta:hover { background: var(--orange-light); }
+
+  .hero-cta svg { width: 16px; height: 16px; }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  .scroll-hint span {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--orange), transparent);
+    animation: scrollPulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    background: var(--orange);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    margin-top: 4px;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--white);
+  }
+
+  .section-body {
+    font-size: 17px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 620px;
+  }
+
+  /* ── CONCEPT ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .concept-grid { grid-template-columns: 1fr; }
+    .sop-grid { grid-template-columns: 1fr !important; }
+    .values-row { flex-direction: column !important; }
+    .stats-bar { gap: 2rem; }
+  }
+
+  .concept-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .concept-card:hover { border-color: rgba(232,96,10,0.4); }
+
+  .concept-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: .5rem;
+    letter-spacing: .5px;
+  }
+
+  .concept-card p {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  .concept-card .icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(232,96,10,0.15);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .concept-card .icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── SCRIPT SAMPLE ── */
+  .script-section {
+    background: var(--navy);
+    padding: 6rem 2rem;
+  }
+
+  .script-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .script-player {
+    background: var(--navy-dark);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 3rem;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .player-bar {
+    background: rgba(232,96,10,0.15);
+    border-bottom: 1px solid rgba(232,96,10,0.2);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .player-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .player-bar span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-left: 4px;
+  }
+
+  .script-lines {
+    padding: 2.5rem;
+  }
+
+  .script-line {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .script-line.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .script-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    flex-shrink: 0;
+    width: 90px;
+    padding-top: 3px;
+  }
+
+  .script-text {
+    font-size: 17px;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.7;
+    font-style: italic;
+    border-left: 2px solid rgba(232,96,10,0.3);
+    padding-left: 1.25rem;
+  }
+
+  .script-text strong {
+    color: var(--orange);
+    font-style: normal;
+  }
+
+  /* ── SOPs ── */
+  .sop-section {
+    padding: 6rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .sop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 3rem;
+  }
+
+  .sop-card {
+    background: var(--navy-dark);
+    padding: 1.5rem;
+    transition: background 0.2s;
+  }
+
+  .sop-card:hover { background: rgba(232,96,10,0.08); }
+
+  .sop-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--orange);
+    margin-bottom: .5rem;
+  }
+
+  .sop-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+  }
+
+  /* ── VALUES ── */
+  .values-section {
+    background: var(--navy);
+    padding: 6rem 2rem;
+  }
+
+  .values-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .values-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .value-card {
+    flex: 1;
+    background: var(--navy-dark);
+    border-top: 3px solid var(--orange);
+    border-radius: 8px;
+    padding: 2rem 1.75rem;
+  }
+
+  .value-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: .75rem;
+  }
+
+  .value-body {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── PRODUCTION ── */
+  .prod-section {
+    padding: 6rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .prod-timeline {
+    margin-top: 3rem;
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .prod-timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: rgba(232,96,10,0.25);
+  }
+
+  .prod-step {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+  }
+
+  .prod-step::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--orange);
+    border: 2px solid var(--navy-dark);
+  }
+
+  .prod-step-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: .25rem;
+  }
+
+  .prod-step-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: .25rem;
+  }
+
+  .prod-step-desc {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .done-badge {
+    display: inline-block;
+    background: rgba(30,180,100,0.15);
+    color: #4ecca3;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  /* ── FOOTER CTA ── */
+  .footer-cta {
+    background: var(--orange);
+    padding: 5rem 2rem;
+    text-align: center;
+  }
+
+  .footer-cta h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-cta p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  .footer-btn {
+    display: inline-block;
+    background: var(--white);
+    color: var(--orange);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .footer-btn:hover { opacity: 0.9; }
+
+  .footer-note {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.06);
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="logo">
+      <div class="chevrons">
+        <div class="chev"></div>
+        <div class="chev"></div>
+        <div class="chev"></div>
+      </div>
+      <span class="wordmark">YOUNG GUNS</span>
+    </div>
+    <div class="hero-eyebrow">Production Concept · 2025</div>
+    <h1 class="hero-title">
+      Welcome
+      <em>Aboard.</em>
+    </h1>
+    <p class="hero-sub">A safety induction video Rookies will actually remember — inspired by the cult airline safety videos that changed how the world pays attention.</p>
+    <a href="#concept" class="hero-cta">
+      See the concept
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num">9</div>
+    <div class="stat-label">SOPs covered</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">~5 min</div>
+    <div class="stat-label">Runtime</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">3</div>
+    <div class="stat-label">Countries</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">Day 1</div>
+    <div class="stat-label">Audience</div>
+  </div>
+</div>
+
+<!-- CONCEPT -->
+<section id="concept">
+  <div class="reveal">
+    <div class="section-label">The concept</div>
+    <h2 class="section-title">Safety training with a twist</h2>
+    <p class="section-body">Airline safety videos cracked the code on getting people to pay attention to information they think they already know. We're applying that same formula to the Young Guns warehouse floor.</p>
+  </div>
+  <div class="concept-grid reveal">
+    <div class="concept-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <h3>Self-aware humour</h3>
+      <p>Acknowledges the Rookie's scepticism before earning their attention — just like British Airways did when they made safety videos people actually watched.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <h3>All 9 SOPs in one hit</h3>
+      <p>Every standard operating procedure covered in a single, cohesive narrative. No separate modules, no drop-off. One video, watched to the end.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h3>Unmistakably Young Guns</h3>
+      <p>Navy, orange, the warehouse floor, Rookies in hi-vis — and the Young Guns Way woven into every scene. This isn't generic safety content. It's yours.</p>
+    </div>
+    <div class="concept-card">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      </div>
+      <h3>Built to scale</h3>
+      <p>One production. Deployed to every new Rookie in Australia, New Zealand, and Canada from Day One — for every cohort, forever.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SCRIPT SAMPLE -->
+<div class="script-section">
+  <div class="script-inner">
+    <div class="reveal">
+      <div class="section-label">Script sample</div>
+      <h2 class="section-title">Hear the voice</h2>
+      <p class="section-body">The tone is warm but direct. Self-aware but never flippant. The safety message always lands.</p>
+    </div>
+    <div class="script-player reveal">
+      <div class="player-bar">
+        <div class="player-dot" style="background:#ff5f57;"></div>
+        <div class="player-dot" style="background:#ffbd2e;"></div>
+        <div class="player-dot" style="background:#28c840;"></div>
+        <span>Welcome Aboard — Opening Scene</span>
+      </div>
+      <div class="script-lines">
+        <div class="script-line">
+          <div class="script-tag">Presenter</div>
+          <div class="script-text">Welcome aboard. Whether you're joining us in <strong>Australia, New Zealand, or Canada</strong> — on behalf of the entire Young Guns crew, we're genuinely glad you're here.</div>
+        </div>
+        <div class="script-line">
+          <div class="script-tag">Presenter</div>
+          <div class="script-text">Now. Before we get started, we'd like to take a few minutes to go through our safety procedures.</div>
+        </div>
+        <div class="script-line">
+          <div class="script-tag">Beat</div>
+          <div class="script-text" style="color: rgba(255,255,255,0.4); font-style:normal; font-size:15px;">— looks directly at camera —</div>
+        </div>
+        <div class="script-line">
+          <div class="script-tag">Presenter</div>
+          <div class="script-text">We know. You've heard a safety video before. You know how to lift a box. You're going to be fine.</div>
+        </div>
+        <div class="script-line">
+          <div class="script-tag">Presenter</div>
+          <div class="script-text">And you probably are. But the people who got hurt on a warehouse floor? <strong>They thought the same thing on Day One.</strong></div>
+        </div>
+        <div class="script-line">
+          <div class="script-tag">Presenter</div>
+          <div class="script-text">So. Settle in. This won't take long — and it might just be the most useful four minutes of your career.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOPs -->
+<div class="sop-section reveal">
+  <div class="section-label">Coverage</div>
+  <h2 class="section-title">Every SOP. One video.</h2>
+  <p class="section-body" style="margin-bottom:0">All nine standard operating procedures are woven into a single cohesive narrative — with dedicated scenes, on-screen graphics, and a memorable line for each.</p>
+  <div class="sop-grid">
+    <div class="sop-card"><div class="sop-num">SOP 01</div><div class="sop-name">Using Cutting Tools</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 02</div><div class="sop-name">Manual Handling</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 03</div><div class="sop-name">General Unload</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 04</div><div class="sop-name">Working with Pallets</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 05</div><div class="sop-name">Stacking Standards</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 06</div><div class="sop-name">How to Wrap a Pallet</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 07</div><div class="sop-name">Leaning & Unstable Stock</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 08</div><div class="sop-name">Extreme Conditions</div></div>
+    <div class="sop-card"><div class="sop-num">SOP 09</div><div class="sop-name">MHE / Forklift Operation</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- VALUES -->
+<div class="values-section">
+  <div class="values-inner">
+    <div class="reveal">
+      <div class="section-label">The Young Guns Way</div>
+      <h2 class="section-title">Values woven in, not bolted on</h2>
+      <p class="section-body">The three pillars of the Young Guns Way aren't mentioned once and forgotten — they're the backbone of the entire script.</p>
+    </div>
+    <div class="values-row reveal">
+      <div class="value-card">
+        <div class="value-title">High Care</div>
+        <div class="value-body">Safety as an act of care — for your teammates, for your customers, and for yourself.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">High Trust</div>
+        <div class="value-body">Content that respects Rookies' intelligence earns their trust. The script never talks down.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-title">High Achievement</div>
+        <div class="value-body">Safe teams perform better. Every SOP is framed as the path to a stronger, more consistent shift.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCTION -->
+<div class="prod-section">
+  <div class="reveal">
+    <div class="section-label">Production status</div>
+    <h2 class="section-title">Ready to hand to your production company</h2>
+    <p class="section-body">The creative groundwork is done. Here's where things stand.</p>
+  </div>
+  <div class="prod-timeline reveal">
+    <div class="prod-step">
+      <div class="prod-step-label">Complete</div>
+      <div class="prod-step-title">Full script <span class="done-badge">Done</span></div>
+      <div class="prod-step-desc">All 9 SOPs, voiceover narration, presenter direction, scene notes and shot list.</div>
+    </div>
+    <div class="prod-step">
+      <div class="prod-step-label">Complete</div>
+      <div class="prod-step-title">Scene breakdown <span class="done-badge">Done</span></div>
+      <div class="prod-step-desc">14 scenes mapped with settings, on-screen graphic requirements, and estimated durations.</div>
+    </div>
+    <div class="prod-step">
+      <div class="prod-step-label">Next</div>
+      <div class="prod-step-title">Storyboard</div>
+      <div class="prod-step-desc">Visual scene-by-scene layout ready to brief a director.</div>
+    </div>
+    <div class="prod-step">
+      <div class="prod-step-label">Next</div>
+      <div class="prod-step-title">Production brief</div>
+      <div class="prod-step-desc">Crew, equipment, location requirements — formatted for a production company.</div>
+    </div>
+    <div class="prod-step">
+      <div class="prod-step-label">Next</div>
+      <div class="prod-step-title">Casting brief</div>
+      <div class="prod-step-desc">Presenter profile and background crew direction for the shoot.</div>
+    </div>
+    <div class="prod-step">
+      <div class="prod-step-label">Final</div>
+      <div class="prod-step-title">Film & deliver</div>
+      <div class="prod-step-desc">Shoot at a Young Guns warehouse — existing locations, existing brand, reusable SOP graphics.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER CTA -->
+<div class="footer-cta">
+  <h2>Let's make<br>this happen.</h2>
+  <p>The script is written. The concept is solid. All it needs is a green light and a production company.</p>
+  <a href="mailto:?subject=Young%20Guns%20%E2%80%94%20Welcome%20Aboard%20Safety%20Video%20Concept&body=Hi%2C%0A%0AI'd%20love%20to%20share%20this%20concept%20for%20a%20Young%20Guns%20safety%20video%20inspired%20by%20airline%20safety%20videos.%20The%20full%20script%20and%20scene%20breakdown%20are%20ready%20to%20go.%0A%0ALet%20me%20know%20your%20thoughts!" class="footer-btn">Share this concept</a>
+  <div class="footer-note">
+    Young Guns &mdash; High Care · High Trust · High Achievement<br>
+    Australia &nbsp;·&nbsp; New Zealand &nbsp;·&nbsp; Canada
+  </div>
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        const lines = entry.target.querySelectorAll('.script-line');
+        lines.forEach((line, i) => {
+          setTimeout(() => line.classList.add('visible'), i * 150);
+        });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
